@@ -21,43 +21,34 @@ const board = (function () {
         }
     }
 
-    const getValueAt = (index) => {
-        return cells[index - 1].getValue();
+    const getValueAt = (position) => {
+        return cells[position - 1].getValue();
     };
 
-    const setValueAt = (index, value) => {
-        cells[index - 1].setValue(value);
-    };
-
-    const render = () => {
-        console.log(
-            `
-            [${getValueAt(1)}][${getValueAt(2)}][${getValueAt(3)}]
-            [${getValueAt(4)}][${getValueAt(5)}][${getValueAt(6)}]
-            [${getValueAt(7)}][${getValueAt(8)}][${getValueAt(9)}]
-            `);
+    const setValueAt = (position, value) => {
+        cells[position - 1].setValue(value);
     };
 
     initBoard();
-    render();
 
-    return { getValueAt, setValueAt, render };
+    return { getValueAt, setValueAt };
 })();
 
 const playerController = (function () {
-    const p1 = createPlayer("John", "X");
-    const p2 = createPlayer("Mary", "O");
+    const p1 = createPlayer("John", "x");
+    const p2 = createPlayer("Mary", "o");
 
     let currentPlayer = p1;
 
-    const play = (index) => {
-        if (board.getValueAt(index) !== " ") {
+    const play = (position) => {
+        if (board.getValueAt(position) !== " ") {
             console.log("That position is already occupied");
             return;
         }
 
-        board.setValueAt(index, currentPlayer.getSelection());
-        board.render();
+        board.setValueAt(position, currentPlayer.getSelection());
+        displayController.render(currentPlayer, position);
+
         if (gameHandler.checkWin(currentPlayer)) {
             console.log(`${currentPlayer.getName()} has won!`);
         } else {
@@ -109,6 +100,15 @@ const gameHandler = (function () {
     };
 
     return { checkWin };
+})();
+
+const displayController = (function () {
+    const render = (player, position) => {
+        let rand = Math.floor(Math.random() * 5 + 1);
+        document.querySelector(`#cell${position}`).src = `images/${player.getSelection()}${rand}.png`;
+    };
+
+    return { render }
 })();
 
 function createPlayer(playerName, playerSelection) {
