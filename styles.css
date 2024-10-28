@@ -47,10 +47,14 @@ main {
     border-radius: 50%;
 }
 
-.value:hover {
+.free:hover {
     border: 5px solid lightgreen;
 }
 
-.value.occupied:hover {
+.occupied:hover {
     border: 5px solid red;
+}
+
+.value.won {
+    border: 5px solid magenta;
 }
