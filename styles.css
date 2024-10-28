@@ -5,7 +5,7 @@
 }
 
 :root {
-    --test: 5px solid black;
+    --default-border: 5px solid black;
 }
 
 body {
@@ -21,10 +21,10 @@ main {
 }
 
 .board-container {
-    width: 500px;
+    width: 800px;
+    height: 800px;
     padding: 10px;
-    height: 500px;
-    border: var(--test);
+    border: var(--default-border);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -33,7 +33,7 @@ main {
 
 .cell {
     border-radius: 20px;
-    border: var(--test);
+    border: var(--default-border);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,11 +41,16 @@ main {
 }
 
 .value {
+    border: 5px solid white;
     width: 100%;
     height: 100%;
     border-radius: 50%;
 }
 
 .value:hover {
-    border: var(--test);
+    border: 5px solid lightgreen;
+}
+
+.value.occupied:hover {
+    border: 5px solid red;
 }

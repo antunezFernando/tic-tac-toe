@@ -1,8 +1,10 @@
 const board = (function () {
     let cells = [];
+    let occupiedCells = 0;
 
     const createCell = () => {
         let value = " ";
+        let element;
 
         const getValue = () => {
             return value;
@@ -10,14 +12,23 @@ const board = (function () {
 
         const setValue = (newValue) => {
             value = newValue;
+        };
+
+        const getElement = () => {
+            return element;
         }
 
-        return { getValue, setValue };
+        const setElement = (elementReference) => {
+            element = elementReference;
+        }
+
+        return { getValue, setValue, getElement, setElement };
     }
 
     const initBoard = () => {
         for (let i = 0; i < 9; i++) {
             cells.push(createCell());
+            cells[i].setElement(document.querySelector(`#cell-${i + 1}`));
         }
     }
 
@@ -29,9 +40,21 @@ const board = (function () {
         cells[position - 1].setValue(value);
     };
 
+    const getOccupiedCells = () => {
+        return occupiedCells;
+    };
+
+    const increaseOccupiedCells = () => {
+        occupiedCells++;
+    };
+
+    const getCellAt = (position) => {
+        return cells[position - 1];
+    };
+
     initBoard();
 
-    return { getValueAt, setValueAt };
+    return { getValueAt, setValueAt, getOccupiedCells, increaseOccupiedCells, getCellAt };
 })();
 
 const playerController = (function () {
@@ -47,10 +70,13 @@ const playerController = (function () {
         }
 
         board.setValueAt(position, currentPlayer.getSelection());
+        board.increaseOccupiedCells();
         displayController.render(currentPlayer, position);
 
         if (gameHandler.checkWin(currentPlayer)) {
             console.log(`${currentPlayer.getName()} has won!`);
+        } else if (board.getOccupiedCells() === 9) {
+            console.log("Tie")
         } else {
             currentPlayer = currentPlayer === p1 ? p2 : p1;
         }
@@ -103,9 +129,45 @@ const gameHandler = (function () {
 })();
 
 const displayController = (function () {
+    (function() {
+        const container = document.querySelector("#board-container");
+        container.addEventListener("click", (e) => {
+            switch (e.target.id) {
+                case "cell-1":
+                    playerController.play(1);
+                    break;
+                case "cell-2":
+                    playerController.play(2);
+                    break;
+                case "cell-3":
+                    playerController.play(3);
+                    break;
+                case "cell-4":
+                    playerController.play(4);
+                    break;
+                case "cell-5":
+                    playerController.play(5);
+                    break;
+                case "cell-6":
+                    playerController.play(6);
+                    break;
+                case "cell-7":
+                    playerController.play(7);
+                    break;
+                case "cell-8":
+                    playerController.play(8);
+                    break;
+                case "cell-9":
+                    playerController.play(9);
+                    break;
+            }
+        });
+    })();
+
     const render = (player, position) => {
         let rand = Math.floor(Math.random() * 5 + 1);
-        document.querySelector(`#cell${position}`).src = `images/${player.getSelection()}${rand}.png`;
+        board.getCellAt(position).getElement().src = `images/${player.getSelection()}${rand}.png`;
+        board.getCellAt(position).getElement().classList.add("occupied");
     };
 
     return { render }
