@@ -6,6 +6,7 @@
 
 :root {
     --default-border: 5px solid white;
+    --default-transition: all 1.5s;
 }
 
 body {
@@ -22,16 +23,16 @@ main {
     height: 100%;
     width: auto;
     background-color: black;
+    font-size: 1.8rem;
 }
 
 .container {
     display: flex;
-    font-size: 1.8rem;
     justify-content: center;
     align-items: center;
     border: var(--default-border);
-    padding: 10px;
-    transition: all 2s;
+    padding: 10px 20px;
+    transition: var(--default-transition);
 }
 
 #name-input-container {
@@ -46,8 +47,25 @@ main {
     gap: 100px;
 }
 
-#button {
+input,
+button {
     font: inherit;
+}
+
+input {
+    appearance: none;
+    outline: none;
+    background-color: black;
+    color: white;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+input:focus {
+    box-shadow: inset 5px 5px 10px grey;
+}
+
+#submit-button {
     padding: 5px 20px;
     align-self: flex-end;
     margin-bottom: -60px;
@@ -57,12 +75,16 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: start;
+    align-items: center;
     gap: 10px;
 }
 
 .strong {
-    font-weight: 800;
+    font-weight: 700;
+}
+
+.player-name {
+    font-size: 1.5em;
 }
 
 .board-container {
@@ -77,7 +99,7 @@ main {
     background-size: cover;
     visibility: hidden;
     max-height: 0;
-    transition: all 2s;
+    transition: var(--default-transition);
 }
 
 .cell {
@@ -110,6 +132,23 @@ main {
 }
 
 .value.won {
-    border: 5px solid darkturquoise;
+    border: 5px solid white;
     opacity: 1.0;
+}
+
+.result-container {
+    border: var(--default-border);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    visibility: hidden;
+    max-height: 0;
+    transition: var(--default-transition);
+}
+
+#play-again {
+    padding: 5px 20px;
 }

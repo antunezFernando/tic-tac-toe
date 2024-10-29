@@ -83,8 +83,10 @@ const initGame = (function(player1, player2) {
     
             if (logicController.checkWin(currentPlayer)) {
                 console.log(`${currentPlayer.getName()} has won!`);
+                displayController.showResult(`${currentPlayer.getName()} has won!`);
                 gameOver = true;
             } else if (board.getOccupiedCells() === 9) {
+                displayController.showResult("Tie");
                 console.log("Tie")
             } else {
                 currentPlayer = currentPlayer === p1 ? p2 : p1;
@@ -167,14 +169,15 @@ const initGame = (function(player1, player2) {
     })();
     
     const displayController = (function () {
+        const resultContainer = document.querySelector("#result-container");
+        const result = document.querySelector("#result");
+        
         (function() {
             const container = document.querySelector("#board-container");
             container.addEventListener("click", (e) => {
                 switch (e.target.id) {
                     case "cell-1":
                         gameController.play(1);
-                        /* document.querySelector("#name-container").style.visibility = "visible";
-                        document.querySelector("#name-container").style.maxHeight = "100%"; */
                         break;
                     case "cell-2":
                         gameController.play(2);
@@ -210,8 +213,15 @@ const initGame = (function(player1, player2) {
             board.getCellAt(position).getElement().classList.toggle("free");
             board.getCellAt(position).getElement().classList.toggle("occupied");
         };
+
+        const showResult = (resultText) => {
+            result.innerText = resultText;
+
+            resultContainer.style.visibility = "visible";
+            resultContainer.style.maxHeight = "100%";
+        };
     
-        return { render }
+        return { render, showResult }
     })();
     
     function createPlayer(playerName, playerSelection) {
@@ -233,7 +243,7 @@ const initGame = (function(player1, player2) {
 const playerNamesHandler = (function() {
     let inputPlayer1 = document.querySelector("#player-1-input");
     let inputPlayer2 = document.querySelector("#player-2-input");
-    let submitButton = document.querySelector("#button");
+    let submitButton = document.querySelector("#submit-button");
 
     let inputContainer = document.querySelector("#name-input-container");
     let nameContainer = document.querySelector("#name-container");
