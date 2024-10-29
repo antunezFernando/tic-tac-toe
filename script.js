@@ -71,10 +71,16 @@ const initGame = (function(player1, player2) {
         let currentPlayer = p1;
 
         const write = new Audio("audio/write.mp3");
-        write.volume = 0.5;
+        write.volume = 0.3;
 
         const wrong = new Audio("audio/wrong.mp3");
-        wrong.volume = 0.5;
+        wrong.volume = 0.3;
+
+        const win = new Audio("audio/win.mp3");
+        win.volume = 0.3;
+
+        const tie = new Audio("audio/tie.mp3");
+        tie.volume = 0.3;
     
         const play = (position) => {
             if(gameOver) {
@@ -90,17 +96,21 @@ const initGame = (function(player1, player2) {
             board.setValueAt(position, currentPlayer.getSelection());
             board.increaseOccupiedCells();
             displayController.render(currentPlayer, position);
-
-            write.play();
     
             if (logicController.checkWin(currentPlayer)) {
                 displayController.showResult(`${currentPlayer.getName()} has won!`);
                 gameOver = true;
+                win.play();
+                return;
             } else if (board.getOccupiedCells() === 9) {
                 displayController.showResult("Tie");
+                tie.play();
+                return;
             } else {
                 currentPlayer = currentPlayer === p1 ? p2 : p1;
             }
+
+            write.play();
         };
 
         const initGame = () => {
