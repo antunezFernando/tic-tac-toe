@@ -14,18 +14,33 @@
 body {
     height: 100vh;
     font-family: 'Callahan', sans-serif;
+    font-size: 1.8rem;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background-color: black;
+    padding: 10px 20px;
+}
+
+header,
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.title {
+    text-shadow: -10px 10px 10px darkblue, 5px -5px 10px crimson;
 }
 
 main {
-    color: white;
+    flex: 1;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     width: auto;
-    background-color: black;
-    font-size: 1.8rem;
 }
 
 .container {
@@ -154,4 +169,17 @@ input:focus {
 
 #play-again {
     padding: 5px 20px;
+}
+
+.credits {
+    margin-left: auto;
+}
+
+.credits-link {
+    text-decoration: none;
+    color: grey;
+}
+
+.credits-link:hover {
+    color: cornflowerblue;
 }

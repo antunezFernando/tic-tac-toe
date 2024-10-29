@@ -69,19 +69,29 @@ const initGame = (function(player1, player2) {
         let gameOver = false;
     
         let currentPlayer = p1;
+
+        const write = new Audio("audio/write.mp3");
+        write.volume = 1.0;
+
+        const wrong = new Audio("audio/wrong.mp3");
+        wrong.volume = 1.0;
     
         const play = (position) => {
             if(gameOver) {
+                wrong.play();
                 return;
             }
 
             if (board.getValueAt(position) !== " ") {
+                wrong.play();
                 return;
             }
     
             board.setValueAt(position, currentPlayer.getSelection());
             board.increaseOccupiedCells();
             displayController.render(currentPlayer, position);
+
+            write.play();
     
             if (logicController.checkWin(currentPlayer)) {
                 displayController.showResult(`${currentPlayer.getName()} has won!`);
@@ -219,6 +229,7 @@ const initGame = (function(player1, player2) {
                 gameController.initGame();
                 resultContainer.style.visibility = "hidden";
                 resultContainer.style.maxHeight = "0";
+                playAgain.style.visibility = "hidden";
                 resetBoard();
             })
         })();
@@ -235,6 +246,7 @@ const initGame = (function(player1, player2) {
 
             resultContainer.style.visibility = "visible";
             resultContainer.style.maxHeight = "100%";
+            playAgain.style.visibility = "visible";
         };
 
         const resetBoard = () => {
