@@ -1,4 +1,4 @@
-const initGame = (function() {
+const initGame = (function(player1, player2) {
     const board = (function () {
         let cells = [];
         let occupiedCells = 0;
@@ -60,8 +60,8 @@ const initGame = (function() {
     })();
     
     const gameController = (function () {
-        const p1 = createPlayer("John", "x");
-        const p2 = createPlayer("Mary", "o");
+        const p1 = createPlayer(player1, "x");
+        const p2 = createPlayer(player2, "o");
         let gameOver = false;
     
         let currentPlayer = p1;
@@ -173,6 +173,8 @@ const initGame = (function() {
                 switch (e.target.id) {
                     case "cell-1":
                         gameController.play(1);
+                        /* document.querySelector("#name-container").style.visibility = "visible";
+                        document.querySelector("#name-container").style.maxHeight = "100%"; */
                         break;
                     case "cell-2":
                         gameController.play(2);
@@ -228,4 +230,40 @@ const initGame = (function() {
     }
 });
 
-initGame();
+const playerNamesHandler = (function() {
+    let inputPlayer1 = document.querySelector("#player-1-input");
+    let inputPlayer2 = document.querySelector("#player-2-input");
+    let submitButton = document.querySelector("#button");
+
+    let inputContainer = document.querySelector("#name-input-container");
+    let nameContainer = document.querySelector("#name-container");
+
+    let displayPlayer1 = document.querySelector("#player-1");
+    let displayPlayer2 = document.querySelector("#player-2");
+
+    let board = document.querySelector("#board-container");
+
+    submitButton.addEventListener("click", () => {
+        let player1 = inputPlayer1.value;
+        let player2 = inputPlayer2.value;
+
+        if(player1 == "" || player2 == "") {
+            return;
+        }
+
+        inputContainer.style.display = "none";
+
+        displayPlayer1.innerText = player1;
+        displayPlayer2.innerText = player2;
+
+        nameContainer.style.visibility = "visible";
+        nameContainer.style.maxHeight = "100%";
+
+        board.style.visibility = "visible";
+        board.style.maxHeight = "100%";
+
+        initGame(player1,player2);
+    });
+});
+
+playerNamesHandler();
