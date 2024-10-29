@@ -1,7 +1,7 @@
 const initGame = (function(player1, player2) {
     const board = (function () {
-        let cells = [];
-        let occupiedCells = 0;
+        let cells;
+        let occupiedCells;
     
         const createCell = () => {
             let value = " ";
@@ -27,10 +27,14 @@ const initGame = (function(player1, player2) {
         }
     
         const initBoard = () => {
+            cells = [];
+            occupiedCells = 0;
             for (let i = 0; i < 9; i++) {
                 cells.push(createCell());
                 cells[i].setElement(document.querySelector(`#cell-${i + 1}`));
-                cells[i].getElement().classList.toggle("free");
+                cells[i].getElement().classList.add("free");
+                cells[i].getElement().classList.remove("occupied");
+                cells[i].getElement().classList.remove("won");
             }
         }
     
@@ -56,7 +60,7 @@ const initGame = (function(player1, player2) {
     
         initBoard();
     
-        return { getValueAt, setValueAt, getOccupiedCells, increaseOccupiedCells, getCellAt };
+        return { getValueAt, setValueAt, getOccupiedCells, increaseOccupiedCells, getCellAt, initBoard };
     })();
     
     const gameController = (function () {
@@ -68,12 +72,10 @@ const initGame = (function(player1, player2) {
     
         const play = (position) => {
             if(gameOver) {
-                console.log("The game has finished");
                 return;
             }
 
             if (board.getValueAt(position) !== " ") {
-                console.log("That position is already occupied");
                 return;
             }
     
@@ -82,18 +84,22 @@ const initGame = (function(player1, player2) {
             displayController.render(currentPlayer, position);
     
             if (logicController.checkWin(currentPlayer)) {
-                console.log(`${currentPlayer.getName()} has won!`);
                 displayController.showResult(`${currentPlayer.getName()} has won!`);
                 gameOver = true;
             } else if (board.getOccupiedCells() === 9) {
                 displayController.showResult("Tie");
-                console.log("Tie")
             } else {
                 currentPlayer = currentPlayer === p1 ? p2 : p1;
             }
         };
+
+        const initGame = () => {
+            currentPlayer = p1;
+            gameOver = false;
+            board.initBoard();
+        };
     
-        return { play };
+        return { play, initGame };
     })();
     
     const logicController = (function () {
@@ -171,6 +177,7 @@ const initGame = (function(player1, player2) {
     const displayController = (function () {
         const resultContainer = document.querySelector("#result-container");
         const result = document.querySelector("#result");
+        const playAgain = document.querySelector("#play-again");
         
         (function() {
             const container = document.querySelector("#board-container");
@@ -206,6 +213,15 @@ const initGame = (function(player1, player2) {
                 }
             });
         })();
+
+        (function() {
+            playAgain.addEventListener("click", () => {
+                gameController.initGame();
+                resultContainer.style.visibility = "hidden";
+                resultContainer.style.maxHeight = "0";
+                resetBoard();
+            })
+        })();
     
         const render = (player, position) => {
             let rand = Math.floor(Math.random() * 5 + 1);
@@ -219,6 +235,12 @@ const initGame = (function(player1, player2) {
 
             resultContainer.style.visibility = "visible";
             resultContainer.style.maxHeight = "100%";
+        };
+
+        const resetBoard = () => {
+            for(let i = 1; i <= 9; i++) {
+                board.getCellAt(i).getElement().src = "";
+            }
         };
     
         return { render, showResult }

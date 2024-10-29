@@ -7,6 +7,8 @@
 :root {
     --default-border: 5px solid white;
     --default-transition: all 1.5s;
+    --fast-transition: all 0.5s;
+    --default-radius: 5px;
 }
 
 body {
@@ -33,6 +35,7 @@ main {
     border: var(--default-border);
     padding: 10px 20px;
     transition: var(--default-transition);
+    border-radius: var(--default-radius);
 }
 
 #name-input-container {
@@ -146,7 +149,7 @@ input:focus {
     gap: 10px;
     visibility: hidden;
     max-height: 0;
-    transition: var(--default-transition);
+    transition: var(--fast-transition);
 }
 
 #play-again {
