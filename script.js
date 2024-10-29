@@ -71,10 +71,10 @@ const initGame = (function(player1, player2) {
         let currentPlayer = p1;
 
         const write = new Audio("audio/write.mp3");
-        write.volume = 1.0;
+        write.volume = 0.5;
 
         const wrong = new Audio("audio/wrong.mp3");
-        wrong.volume = 1.0;
+        wrong.volume = 0.5;
     
         const play = (position) => {
             if(gameOver) {
